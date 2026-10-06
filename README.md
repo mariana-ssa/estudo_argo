@@ -1,6 +1,6 @@
 # estudo_argo
 
-1- Ter o docker, kind e kubectl instalados.
+1- Ter o docker, kind, kubectl e o argocd CLI instalados.
 
 2- Criar um cluster com kind.
 ```bash
@@ -49,10 +49,4 @@ Irá solicitar o nome de usuário e a senha. O nome de usuário padrão é `admi
 
 ```bash
 kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
-```
-
-Em seguida, abra o navegador e acesse `https://localhost:8080`. O login padrão é `admin` e a senha é o nome do pod do servidor Argo CD:
-
-```bash
-kubectl get pods -n argocd -l app.kubernetes.io/name=argocd-server -o name | cut -d'/' -f 2
 ```
