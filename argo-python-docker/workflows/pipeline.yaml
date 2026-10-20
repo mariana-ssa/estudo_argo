@@ -1,0 +1,42 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+
+metadata:
+  generateName: pipeline-python-
+
+spec:
+  entrypoint: pipeline
+
+  templates:
+    - name: pipeline
+      dag: # organiza as tarefas do pipeline que ira rodar
+        tasks:
+          - name: download
+            template: executar-download
+
+          - name: tratamento
+            dependencies: [download] # tarefa tratamento so inicia apos download finalizar com sucesso
+            template: executar-tratamento
+
+          - name: relatorio
+            dependencies: [tratamento]
+            template: executar-relatorio
+
+    - name: executar-download
+      container:
+        image: pipeline-python:v1
+        imagePullPolicy: Never
+        command: ["python", "src/download.py"]
+
+    - name: executar-tratamento
+      container:
+        image: pipeline-python:v1
+        imagePullPolicy: Never
+        command: ["python", "src/treat.py"]
+
+    - name: executar-relatorio
+      container:
+        image: pipeline-python:v1
+        imagePullPolicy: Never
+        command: ["python", "src/report.py"]
