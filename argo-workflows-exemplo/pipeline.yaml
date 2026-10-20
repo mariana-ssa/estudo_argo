@@ -1,0 +1,52 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+
+metadata:
+  generateName: pipeline-python-
+
+spec:
+  entrypoint: pipeline
+
+  templates:
+    - name: pipeline
+      dag: # organiza as tarefas do pipeline que ira rodar
+        tasks:
+          - name: download
+            template: download
+
+          - name: tratamento
+            dependencies: [download] # tarefa tratamento so inicia apos download finalizar com sucesso
+            template: tratamento
+
+          - name: relatorio
+            dependencies: [tratamento]
+            template: relatorio
+
+    - name: download
+      container:
+        image: python:3.12-slim
+        command: [python, -c]
+        args:
+          - |
+            print("Iniciando download...")
+            print("Download concluído!")
+
+    - name: tratamento
+      container:
+        image: python:3.12-slim
+        command: [python, -c]
+        args:
+          - |
+            dados = [10, 20, 30, 40, 50]
+            media = sum(dados) / len(dados)
+            print(f"Média dos dados: {media}")
+
+    - name: relatorio
+      container:
+        image: python:3.12-slim
+        command: [python, -c]
+        args:
+          - |
+            print("Gerando relatório...")
+            print("Pipeline finalizado!")
