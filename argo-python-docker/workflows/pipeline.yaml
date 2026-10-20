@@ -25,18 +25,18 @@ spec:
 
     - name: executar-download
       container:
-        image: pipeline-python:v1
+        image: pipeline-python:v2
         imagePullPolicy: Never
         command: ["python", "src/download.py"]
 
     - name: executar-tratamento
       container:
-        image: pipeline-python:v1
+        image: pipeline-python:v2
         imagePullPolicy: Never
         command: ["python", "src/treat.py"]
 
     - name: executar-relatorio
       container:
-        image: pipeline-python:v1
+        image: pipeline-python:v2
         imagePullPolicy: Never
         command: ["python", "src/report.py"]
